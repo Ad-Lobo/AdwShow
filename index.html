@@ -422,6 +422,12 @@
         </div>
     </footer>
 
+    <!-- BOTÃO FLUTUANTE DO WHATSAPP (leva ao formulário de contato) -->
+    <a href="#contato" id="waFloat" aria-label="Fale conosco no WhatsApp" title="Fale conosco no WhatsApp" class="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl shadow-black/50 hover:scale-110 transition">
+        <span class="absolute inset-0 rounded-full bg-[#25D366] opacity-60 animate-ping"></span>
+        <i class="fa-brands fa-whatsapp text-3xl relative"></i>
+    </a>
+
     <!-- MODAL DE COTAÇÃO RÁPIDA -->
     <div id="quoteModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-zinc-900 border border-gold/40 rounded-3xl max-w-lg w-full p-8 relative">
@@ -797,6 +803,15 @@
 
             place(); layout(); restart();
             window.addEventListener('resize', layout);
+        })();
+
+        // Esconde o botão flutuante enquanto o formulário de contato está na tela
+        (function () {
+            const waF = document.getElementById('waFloat');
+            new IntersectionObserver(([e]) => {
+                waF.style.opacity = e.isIntersecting ? '0' : '1';
+                waF.style.pointerEvents = e.isIntersecting ? 'none' : 'auto';
+            }, { threshold: 0.25 }).observe(document.getElementById('contato'));
         })();
 
         // Renderizar casting ao carregar
