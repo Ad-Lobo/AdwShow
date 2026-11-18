@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADW SHOW | Produções e Representação Artística</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="6308b6ae21.jpg">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#D4AF37',
+                            light: '#F3E5AB',
+                            dark: '#AA820A'
+                        },
+                        darkBg: '#0B0B0B',
+                        cardBg: '#141414'
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Oswald', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA820A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border {
+            border-image: linear-gradient(to right, #D4AF37, #F3E5AB, #AA820A) 1;
+        }
+        /* Tratamento de cor uniforme nas fotos de capa (tom quente/dourado) */
+        .artist-cover {
+            filter: saturate(1.1) contrast(1.08) brightness(0.92) sepia(0.18);
+        }
+        .group:hover .artist-cover {
+            filter: saturate(1.2) contrast(1.1) brightness(1) sepia(0.1);
+        }
+        /* ===== Cubo/Prisma 3D do Réveillon ===== */
+        .rv-stage { --rv-w: min(calc(100vw - 32px), 460px); position: relative; width: var(--rv-w); height: calc(var(--rv-w) * 1.15); perspective: 1600px; touch-action: pan-y; cursor: grab; }
+        
+        .rv-spinner { position: absolute; inset: 0; transform-style: preserve-3d; }
+        .rv-spinner.anim { transition: transform 0.6s cubic-bezier(.25,.8,.3,1); }
+        .rv-face { position: absolute; inset: 0; border-radius: 1.25rem; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+                   border: 1px solid rgba(212,175,55,.55); box-shadow: 0 25px 60px -20px rgba(0,0,0,.9), 0 0 40px -10px rgba(212,175,55,.35); background: #0B0B0B; }
+        .rv-item { position: absolute; inset: 0; }
+        .rv-face::after { content: ""; position: absolute; inset: 0; background: #000; opacity: var(--shade, 0); pointer-events: none; transition: opacity .1s; }
+        .rv-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+                   background: radial-gradient(circle at 50% 40%, #2a2210 0%, #0B0B0B 70%); }
+        .rv-tag { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #D4AF37; border: 1px solid rgba(212,175,55,.4);
+                  padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.5); font-weight: 600; }
+        .rv-face img.rv-photo { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .rv-info { position: absolute; left: 0; right: 0; bottom: 0; padding: 28px 22px 22px; text-align: left;
+                   background: linear-gradient(to top, rgba(0,0,0,.95) 30%, rgba(0,0,0,.6) 70%, transparent); }
+        .rv-dot { width: 7px; height: 7px; border-radius: 999px; background: #3f3f46; transition: all .3s; }
+        .rv-dot.on { width: 20px; background: #D4AF37; }
+        .hero-glow {
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, rgba(11, 11, 11, 0.95) 70%);
+        }
+    </style>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans antialiased selection:bg-gold selection:text-black">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3">
+                <img src="6308b6ae21.jpg" alt="ADW SHOW" class="w-12 h-12 rounded-full border border-gold/60 object-cover shadow-lg shadow-gold/20">
+                <div>
+                    <span class="font-heading text-2xl font-bold tracking-wider text-white">ADW <span class="text-gold">SHOW</span></span>
+                    <span class="block text-[9px] tracking-[0.2em] text-gray-400 uppercase">Produções & Representação</span>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#inicio" class="hover:text-gold transition">Início</a>
+                <a href="#casting" class="hover:text-gold transition">Casting 2027</a>
+                <a href="#producao" class="hover:text-gold transition">Estrutura 360º</a>
+                <a href="#sobre" class="hover:text-gold transition">A Produtora</a>
+                <a href="#contato" class="hover:text-gold transition">Contato</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <a href="https://instagram.com/adw.show" target="_blank" class="w-9 h-9 rounded-full bg-zinc-900 border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-black transition" title="Instagram ADW SHOW">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@adw.show?_r=1&_t=ZS-9BNP8exxJA5" target="_blank" class="w-9 h-9 rounded-full bg-zinc-900 border border-gold/40 flex items-center justify-center text-gold hover:bg-gold hover:text-black transition" title="TikTok ADW SHOW">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                <a href="#contato" class="hidden sm:inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-xs uppercase tracking-wider hover:opacity-90 transition shadow-lg shadow-gold/20">
+                    Orçamento 2027
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative pt-32 pb-20 md:pt-44 md:pb-32 hero-glow overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <!-- CUBO 3D GIRATÓRIO: RÉVEILLON 26/27 -->
+            <div class="mb-10 select-none">
+                <div id="rvStage" class="rv-stage mx-auto" style="touch-action: pan-y" aria-roledescription="carrossel" aria-label="Atrações disponíveis para o Réveillon 26/27">
+                    <div id="rvSpinner" class="rv-spinner">
+                        <div class="rv-item rv-logo">
+                            <img src="5d6accfa3f.png" alt="ADW SHOW Produções e Representação Artística" class="w-[88%] mx-auto" draggable="false">
+                            <span class="rv-tag">🎆 Réveillon 26/27 · gire para ver</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center gap-4 mt-6">
+                    <button type="button" onclick="rvGo(-1)" aria-label="Anterior" class="w-10 h-10 rounded-full border border-gold/50 text-gold hover:bg-gold hover:text-black transition"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div id="rvDots" class="flex gap-1.5"></div>
+                    <button type="button" onclick="rvGo(1)" aria-label="Próximo" class="w-10 h-10 rounded-full border border-gold/50 text-gold hover:bg-gold hover:text-black transition"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <span class="inline-block py-1 px-4 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold tracking-widest uppercase mb-6">
+                ✨ Temporada Oficial 2027 Aberta
+            </span>
+            <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight uppercase mb-6 max-w-5xl mx-auto">
+                Grandes Artistas. <span class="gold-gradient-text">Grandes Eventos.</span>
+            </h1>
+            <p class="text-gray-300 text-base sm:text-xl max-w-2xl mx-auto mb-10 font-light">
+                Exclusividade e segurança jurídica na contratação dos maiores nomes do cenário nacional para Prefeituras, Rodeios, Festas Agropecuárias e Grandes Festivais.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#casting" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-heading font-bold text-sm tracking-wider uppercase hover:scale-105 transition shadow-xl shadow-gold/20 text-center">
+                    Ver Casting 2027
+                </a>
+                <a href="#producao" class="w-full sm:w-auto px-8 py-4 rounded-full bg-zinc-900 border border-gold/40 text-white font-heading font-bold text-sm tracking-wider uppercase hover:border-gold transition text-center">
+                    Estrutura & Produção 360º
+                </a>
+            </div>
+            
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto border-t border-b border-zinc-800 py-6">
+                <div>
+                    <span class="block font-heading text-3xl font-bold text-gold">32+</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">Artistas Exclusivos</span>
+                </div>
+                <div>
+                    <span class="block font-heading text-3xl font-bold text-gold">100%</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">Segurança Jurídica</span>
+                </div>
+                <div>
+                    <span class="block font-heading text-3xl font-bold text-gold">360º</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">Estrutura para Eventos</span>
+                </div>
+                <div>
+                    <span class="block font-heading text-3xl font-bold text-gold">2027</span>
+                    <span class="text-xs text-gray-400 uppercase tracking-wider">Agenda Nacional</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CASTING 2027 SECTION -->
+    <section id="casting" class="py-20 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-gold text-xs font-semibold tracking-widest uppercase">Casting Exclusivo</span>
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold uppercase mt-2">Agenda Shows <span class="text-gold">2027</span></h2>
+                <p class="text-gray-400 text-sm mt-2 max-w-xl mx-auto">Selecione o artista desejado e solicite cotação oficial de data com nossa equipe comercial.</p>
+                
+                <!-- BUSCA & FILTROS -->
+                <div class="mt-8 max-w-md mx-auto relative">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-gray-500"></i>
+                    <input type="text" id="searchArtist" placeholder="Buscar artista por nome..." class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-12 pr-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition">
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 mt-6" id="categoryFilters">
+                    <button onclick="filterCategory('all')" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase bg-gold text-black transition filter-btn active">Todos</button>
+                    <button onclick="filterCategory('sertanejo')" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase bg-zinc-900 text-gray-300 hover:text-gold border border-zinc-800 transition filter-btn">Sertanejo</button>
+                    <button onclick="filterCategory('piseiro')" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase bg-zinc-900 text-gray-300 hover:text-gold border border-zinc-800 transition filter-btn">Piseiro & Forró</button>
+                    <button onclick="filterCategory('eletronica')" class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase bg-zinc-900 text-gray-300 hover:text-gold border border-zinc-800 transition filter-btn">Eletrônica</button>
+                </div>
+            </div>
+
+            <!-- GRID DE ARTISTAS -->
+            <div id="artistsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Preenchido via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUÇÃO E ESTRUTURA 360º -->
+    <section id="producao" class="py-20 bg-darkBg border-t border-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-gold text-xs font-semibold tracking-widest uppercase">Soluções Completas</span>
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold uppercase mt-2">Produção para <span class="text-gold">Grandes Eventos</span></h2>
+                <p class="text-gray-400 text-sm mt-2 max-w-2xl mx-auto">Entregamos infraestrutura técnica de ponta, sonorização, iluminação profissional, palco, camarins e produção artística integral.</p>
+            </div>
+
+            <!-- ESTRUTURA: FIVELA DE PRATA (vídeo na moldura) -->
+            <div class="max-w-4xl mx-auto mb-12 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-gold/60 transition">
+                <div class="relative aspect-video bg-zinc-950">
+                    <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="producao-capa.jpg">
+                        <source src="producao.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeo.
+                    </video>
+                    <span class="absolute top-3 right-3 bg-black/60 backdrop-blur-md border border-gold/30 text-gold text-[10px] font-bold px-2.5 py-1 rounded-full uppercase pointer-events-none">2027</span>
+                </div>
+                <div class="p-5 sm:p-6">
+                    <span class="text-[10px] text-gold uppercase tracking-widest font-semibold">Estrutura • Rodeio & Shows</span>
+                    <h3 class="font-heading text-2xl font-bold uppercase text-white mt-1 mb-4">Fivela de Prata</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <a href="https://wa.me/message/C5N4XLCYH7BTB1" target="_blank" rel="noopener" class="w-full py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebe5a] text-black text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-base"></i> <span>Falar no WhatsApp</span>
+                        </a>
+                        <button onclick="openModal('Fivela de Prata')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-gold hover:text-black border border-zinc-700 hover:border-gold text-xs font-bold uppercase tracking-wider transition">
+                            Cotar Data 2027
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-horse-head"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Rodeios & Exposições Agropecuárias</h3>
+                    <p class="text-gray-400 text-sm mb-4">Estrutura completa para feiras agropecuárias, arenas de rodeio, arquibancadas, camarotes e shows de grande porte.</p>
+                    <a href="#contato" onclick="selectEvent('Rodeios e Exposições Agropecuárias')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-city"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Aniversários de Cidades & Prefeituras</h3>
+                    <p class="text-gray-400 text-sm mb-4">Atendimento completo a licitações, eventos públicos, comemorações municipais com total conformidade documental e jurídica.</p>
+                    <a href="#contato" onclick="selectEvent('Aniversários de Cidades e Eventos Públicos')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-champagne-glasses"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Carnaval & Réveillon</h3>
+                    <p class="text-gray-400 text-sm mb-4">Festas populares de virada de ano e carnavais de rua ou clubes com atrações de peso e logística impecável.</p>
+                    <a href="#contato" onclick="selectEvent('Carnaval e Réveillon')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Festas Corporativas & Casamentos</h3>
+                    <p class="text-gray-400 text-sm mb-4">Produção exclusiva para convenções empresariais, festas de fim de ano, casamentos de alto padrão e formaturas.</p>
+                    <a href="#contato" onclick="selectEvent('Festas Corporativas e Casamentos')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-microphone"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Palestras & Congressos</h3>
+                    <p class="text-gray-400 text-sm mb-4">Curadoria e agenciamento de palestrantes renomados para eventos corporativos, educacionais e simpósios.</p>
+                    <a href="#contato" onclick="selectEvent('Palestras e Congressos')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-6 hover:border-gold/50 transition group">
+                    <div class="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold text-xl mb-4 group-hover:bg-gold group-hover:text-black transition">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold uppercase mb-2">Rider Técnico & Sonorização</h3>
+                    <p class="text-gray-400 text-sm mb-4">Equipamentos de som, iluminação cênica, painéis LED de alta resolução e equipe técnica especializada.</p>
+                    <a href="#contato" onclick="selectEvent('Rider Técnico e Sonorização')" class="text-gold text-xs font-bold uppercase tracking-wider flex items-center space-x-2 hover:underline">
+                        <span>Solicitar Projeto</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE A ADW SHOW -->
+    <section id="sobre" class="py-20 bg-zinc-950 border-t border-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-gold text-xs font-semibold tracking-widest uppercase">Tradição & Excelência</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold uppercase mt-2 mb-6">ADW SHOW <span class="text-gold">Produções e Representação Artística</span></h2>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                        A **ADW SHOW** consolida-se no mercado nacional como uma das principais referências em agenciamento artístico, produção de grandes eventos e representação de exclusividade das maiores estrelas da música brasileira.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                        Trabalhamos com rigor técnico, suporte logístico integral e total segurança jurídica em todas as negociações — atendendo prefeituras municipais, comissões de festas, empresários do setor e grandes marcas em todo o território nacional.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="border-l-2 border-gold pl-4">
+                            <span class="block font-heading font-bold text-lg text-white">Exclusividade</span>
+                            <span class="text-xs text-gray-400">Artistas consagrados no portfólio oficial.</span>
+                        </div>
+                        <div class="border-l-2 border-gold pl-4">
+                            <span class="block font-heading font-bold text-lg text-white">Suporte Total</span>
+                            <span class="text-xs text-gray-400">Do contrato ao rider técnico no palco.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-video bg-gradient-to-tr from-zinc-900 to-zinc-800 rounded-2xl border border-gold/30 p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-8 opacity-10 text-gold text-8xl font-heading font-bold">ADW</div>
+                        <div>
+                            <span class="text-gold text-xs font-semibold uppercase tracking-widest">Compromisso ADW</span>
+                            <h3 class="font-heading text-2xl font-bold mt-1 text-white">O Sucesso do seu Evento Começa Aqui</h3>
+                        </div>
+                        <div class="space-y-3 pt-6 border-t border-zinc-800">
+                            <div class="flex items-center space-x-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-gold"></i>
+                                <span>Atendimento ágil para contratantes e prefeituras</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-gold"></i>
+                                <span>Acesso a Press Kits e materiais oficiais atualizados</span>
+                            </div>
+                            <div class="flex items-center space-x-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-gold"></i>
+                                <span>Redes oficiais: @adw.show (Instagram e TikTok)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO & ORÇAMENTO -->
+    <section id="contato" class="py-20 bg-darkBg border-t border-zinc-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-gold text-xs font-semibold tracking-widest uppercase">Canal Direto</span>
+                <h2 class="font-heading text-3xl sm:text-5xl font-bold uppercase mt-2">Cotação & <span class="text-gold">Contatos</span></h2>
+                <p class="text-gray-400 text-sm mt-2">Preencha os dados abaixo para solicitar disponibilidade de data e propostas comerciais.</p>
+            </div>
+
+            <div class="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-8 sm:p-10 shadow-2xl">
+                <form id="quoteForm" onsubmit="sendWhatsApp(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-300 mb-2">Seu Nome / Contratante</label>
+                            <input type="text" id="cName" required placeholder="Ex: João Silva" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-300 mb-2">Cidade / Estado</label>
+                            <input type="text" id="cCity" required placeholder="Ex: Uberlândia - MG" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-300 mb-2">Artista / Serviço Desejado</label>
+                            <input type="text" id="cArtist" placeholder="Ex: Gusttavo Lima ou Estrutura de Rodeio" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-300 mb-2">Data Pretendida para 2027</label>
+                            <input type="text" id="cDate" placeholder="Ex: 15/07/2027" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold uppercase text-gray-300 mb-2">Mensagem / Observações</label>
+                        <textarea id="cMsg" rows="4" placeholder="Informe detalhes do evento, público estimado e local..." class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-heading font-bold text-sm tracking-widest uppercase hover:opacity-90 transition shadow-lg shadow-gold/20 flex items-center justify-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Enviar Solicitação via WhatsApp</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-zinc-900 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <img src="6308b6ae21.jpg" alt="ADW SHOW" class="w-10 h-10 rounded-full border border-gold/60 object-cover">
+                <span class="font-heading text-xl font-bold tracking-wider text-white">ADW <span class="text-gold">SHOW</span></span>
+            </div>
+            
+            <p class="text-xs text-gray-500 text-center">
+                © 2027 ADW SHOW - Produções e Representação Artística. Todos os direitos reservados.
+            </p>
+
+            <div class="flex items-center space-x-4">
+                <a href="https://instagram.com/adw.show" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 border border-gold/30 flex items-center justify-center text-gold hover:bg-gold hover:text-black transition text-xs">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@adw.show?_r=1&_t=ZS-9BNP8exxJA5" target="_blank" class="w-8 h-8 rounded-full bg-zinc-900 border border-gold/30 flex items-center justify-center text-gold hover:bg-gold hover:text-black transition text-xs">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE COTAÇÃO RÁPIDA -->
+    <div id="quoteModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-gold/40 rounded-3xl max-w-lg w-full p-8 relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="font-heading text-2xl font-bold uppercase mb-2">Cotar Data: <span id="modalArtistName" class="text-gold"></span></h3>
+            <p class="text-xs text-gray-400 mb-6">Preencha os dados abaixo para verificar disponibilidade para 2027.</p>
+            
+            <form onsubmit="sendModalWhatsApp(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Seu Nome / Contratante</label>
+                    <input type="text" id="mName" required placeholder="Seu nome" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Cidade / Estado</label>
+                    <input type="text" id="mCity" required placeholder="Ex: Goiânia - GO" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-gray-300 mb-1">Data Desejada (2027)</label>
+                    <input type="text" id="mDate" required placeholder="Ex: 20/08/2027" class="w-full bg-black/50 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-gold">
+                </div>
+                <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-heading font-bold text-xs uppercase tracking-wider hover:opacity-90 transition mt-2">
+                    Enviar Solicitação no WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT DE DADOS E RENDERIZAÇÃO -->
+    <script>
+        /* =====================================================================
+           FOTOS DOS ARTISTAS
+           - Para usar a foto oficial (press kit) de um artista, cole o link
+             ou o nome do arquivo no campo  foto: ""  (ex: foto: "fotos/ana-castela.jpg").
+           - Enquanto o campo estiver vazio, o card usa uma foto de show em alta
+             resolução (sem repetir entre cards vizinhos) e, se ela não carregar,
+             uma capa dourada com as iniciais do artista.
+           ===================================================================== */
+        // Fotos enviadas pelo contratante (embutidas no próprio arquivo)
+        const FOTOS = {
+            u_818edbce: "4155916bac.jpg",
+            u_9fbb9c8f: "2815a098d7.jpg",
+            u_7062e19c: "a07c054cd9.jpg",
+            u_659de403: "2d6071b273.jpg",
+            u_0a6980a5: "ced6c24a5f.jpg",
+            u_israelrodolffo: "13bced9718.jpg",
+            u_icarogilmar: "588e9b0e91.jpg",
+            u_hugoguilherme: "a03b02db49.jpg",
+            u_8c69bafc: "c575a407fe.jpg",
+            u_6a3a2b81: "3e2e05853a.jpg",
+            u_5e68ac00: "e6545a9048.jpg",
+            u_993c6ee8: "b20d52b838.jpg",
+            u_a92c6a54: "068055d312.jpg",
+            u_3843d723: "30be80c308.jpg",
+            u_0ff056be: "93713b4a01.jpg",
+            panda: "fc1c44253b.jpg",
+            humberto: "c5197d88a7.jpg",
+            emilio: "9cd1cc6fc8.jpg",
+            agroboys: "f5a1e58f24.jpg",
+            larissa: "0231094dd5.jpg",
+            luiz: "f7d3256e1f.jpg",
+            naessa: "98b9ebefd3.jpg",
+            carrero: "ba74881277.jpg",
+            valeria: "077b3e7011.jpg",
+            mariana: "cb290aced2.jpg",
+            traia: "b83b4fe467.jpg",
+            felipe: "3dfac07a80.jpg",
+            matheus: "86cbc4a249.jpg",
+            bruno: "b69c809d98.jpg",
+            guilherme: "1b17c42927.jpg"
+        };
+
+        const casting2027 = [
+            { name: "Gusttavo Lima", category: "sertanejo", foto: FOTOS.u_a92c6a54 },
+            { name: "Ana Castela", category: "sertanejo", foto: FOTOS.u_0ff056be },
+            { name: "Zezé Di Camargo (Zezé Rústico)", category: "sertanejo", foto: FOTOS.u_3843d723 },
+            { name: "Hugo & Guilherme", category: "sertanejo", foto: FOTOS.u_hugoguilherme },
+            { name: "Ícaro & Gilmar", category: "sertanejo", foto: FOTOS.u_icarogilmar },
+            { name: "Edson & Hudson", category: "sertanejo", foto: FOTOS.u_818edbce },
+            { name: "Israel & Rodolffo", category: "sertanejo", foto: FOTOS.u_israelrodolffo },
+            { name: "Rionegro & Solimões", category: "sertanejo", foto: FOTOS.u_993c6ee8 },
+            { name: "Os Barões da Pisadinha", category: "piseiro", foto: FOTOS.u_9fbb9c8f },
+            { name: "Teodoro & Sampaio", category: "sertanejo", foto: FOTOS.u_7062e19c },
+            { name: "Cezar & Paulinho", category: "sertanejo", foto: FOTOS.u_659de403 },
+            { name: "Guilherme & Santiago", category: "sertanejo", foto: FOTOS.u_0a6980a5 },
+            { name: "Bruna Viola", category: "sertanejo", foto: FOTOS.u_5e68ac00 },
+            { name: "Fiduma & Jeca", category: "sertanejo", foto: FOTOS.u_6a3a2b81 },
+            { name: "Bonde do Forró", category: "piseiro", foto: FOTOS.u_8c69bafc },
+            { name: "Mariana Fagundes", category: "sertanejo", foto: FOTOS.mariana },
+            { name: "Traia Véia", category: "sertanejo", foto: FOTOS.traia },
+            { name: "Felipe & Rodrigo", category: "sertanejo", foto: FOTOS.felipe },
+            { name: "Matheus Vargas", category: "sertanejo", foto: FOTOS.matheus },
+            { name: "Bruno & Denner", category: "sertanejo", foto: FOTOS.bruno },
+            { name: "Guilherme Silva", category: "sertanejo", foto: FOTOS.guilherme },
+            { name: "Luiz Cláudio", category: "sertanejo", foto: FOTOS.luiz },
+            { name: "Naessa", category: "sertanejo", foto: FOTOS.naessa },
+            { name: "Carrero & Capataz", category: "sertanejo", foto: FOTOS.carrero },
+            { name: "Valéria Barros", category: "sertanejo", foto: FOTOS.valeria },
+            { name: "Panda", category: "sertanejo", foto: FOTOS.panda },
+            { name: "Humberto & Ronaldo", category: "sertanejo", foto: FOTOS.humberto },
+            { name: "Emílio & Eduardo", category: "sertanejo", foto: FOTOS.emilio },
+            { name: "Agroboys", category: "sertanejo", foto: FOTOS.agroboys },
+            { name: "DJ Larissa Lahw", category: "eletronica", foto: FOTOS.larissa }
+        ];
+
+        // Banco de fotos de palco/show em alta resolução (Unsplash, uso livre)
+        const unsplash = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&crop=entropy&q=85&w=1000&h=1250`;
+        const coverPool = {
+            sertanejo: [
+                '1516450360452-9312f5e86fc7', '1470225620780-dba8ba36b745', '1514525253161-7a46d19cd819',
+                '1511671782779-c97d3d27a1d4', '1465847899084-d164df4dedc6', '1501386761578-eac5c94b800a',
+                '1526478806334-5fd488fcaabc', '1508700115892-45ecd05ae2ad', '1492684223066-81342ee5ff30',
+                '1493225457124-a3eb161ffa5f', '1459749411175-04bf5292ceea', '1540039155733-5bb30b53aa14',
+                '1506157786151-b8491531f063', '1429962714451-bb934ecdc4ec', '1524368535928-5b5e00ddc76b',
+                '1514320291840-2e0a9bf2a9ae', '1510915361894-db8b60106cb1', '1499364615650-ec38552f4f34'
+            ],
+            piseiro: ['1533174072545-7a4b6ad7a6c3', '1468164016595-6108e4c60c8b', '1506157786151-b8491531f063'],
+            eletronica: ['1571266028243-3716f02d2d2e', '1574391884720-bbc3740c59d1', '1470225620780-dba8ba36b745']
+        };
+
+        // Distribui as fotos em sequência por categoria, sem repetir até esgotar o banco
+        (function assignCovers() {
+            const counters = {};
+            casting2027.forEach(artist => {
+                const pool = coverPool[artist.category] || coverPool.sertanejo;
+                const i = counters[artist.category] = (counters[artist.category] ?? -1) + 1;
+                artist.img = artist.foto || unsplash(pool[i % pool.length]);
+            });
+        })();
+
+        // Capa dourada com iniciais (usada se a foto não carregar)
+        function initialsCover(name) {
+            const initials = name.replace(/\(.*?\)/g, '').split(/\s|&/).filter(w => w.length > 2 || /^[A-ZÁÉÍÓÚ]/.test(w))
+                .map(w => w[0]).filter(c => /[A-Za-zÀ-ú]/.test(c)).slice(0, 2).join('').toUpperCase();
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+                <defs><radialGradient id="g" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#3a2f12"/><stop offset="1" stop-color="#0b0b0b"/></radialGradient>
+                <linearGradient id="t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3E5AB"/><stop offset=".5" stop-color="#D4AF37"/><stop offset="1" stop-color="#AA820A"/></linearGradient></defs>
+                <rect width="800" height="1000" fill="url(#g)"/>
+                <circle cx="400" cy="420" r="210" fill="none" stroke="#D4AF37" stroke-opacity=".35" stroke-width="3"/>
+                <text x="400" y="490" text-anchor="middle" font-family="Oswald, sans-serif" font-weight="700" font-size="190" fill="url(#t)">${initials}</text></svg>`;
+            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let selectedArtistForQuote = '';
+
+        function renderArtists() {
+            const grid = document.getElementById('artistsGrid');
+            grid.innerHTML = '';
+
+            const filtered = casting2027.filter(artist => {
+                const matchesCategory = currentFilter === 'all' || artist.category === currentFilter;
+                const matchesSearch = artist.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">Nenhum artista encontrado.</div>`;
+                return;
+            }
+
+            filtered.forEach(artist => {
+                const card = document.createElement('div');
+                card.className = "bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-gold/60 transition group flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="relative aspect-[4/5] overflow-hidden bg-zinc-950">
+                        <img src="${artist.img}" alt="${artist.name}" loading="lazy" decoding="async" data-name="${artist.name}" onerror="this.onerror=null;this.src=initialsCover(this.dataset.name)" class="w-full h-full object-cover ${artist.foto ? 'object-top' : 'artist-cover'} group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80"></div>
+                        <span class="absolute top-3 right-3 bg-black/60 backdrop-blur-md border border-gold/30 text-gold text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">2027</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <span class="text-[10px] text-gold uppercase tracking-widest font-semibold">${artist.category}</span>
+                            <h3 class="font-heading text-lg font-bold uppercase text-white mt-1 mb-4">${artist.name}</h3>
+                        </div>
+                        <button onclick="openModal('${artist.name}')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-gold hover:text-black border border-zinc-700 hover:border-gold text-xs font-bold uppercase tracking-wider transition">
+                            Cotar Data 2027
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-gold', 'text-black');
+                btn.classList.add('bg-zinc-900', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-zinc-900', 'text-gray-300');
+            event.target.classList.add('bg-gold', 'text-black');
+            renderArtists();
+        }
+
+        document.getElementById('searchArtist').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderArtists();
+        });
+
+        function selectEvent(eventName) {
+            document.getElementById('cArtist').value = eventName;
+        }
+
+        function openModal(artistName) {
+            selectedArtistForQuote = artistName;
+            document.getElementById('modalArtistName').innerText = artistName;
+            document.getElementById('quoteModal').classList.remove('hidden');
+            document.getElementById('quoteModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('quoteModal').classList.remove('flex');
+            document.getElementById('quoteModal').classList.add('hidden');
+        }
+
+        // Link oficial de WhatsApp da ADW SHOW. Esse tipo de link não aceita mensagem pronta,
+        // então os dados do formulário são copiados para o visitante colar na conversa.
+        const WHATSAPP_LINK = 'https://wa.me/message/C5N4XLCYH7BTB1';
+        function abrirWhatsApp(text) {
+            let msg = text;
+            try { msg = decodeURIComponent(text); } catch (err) { msg = text.replace(/%0A/g, '\n'); }
+            try { navigator.clipboard && navigator.clipboard.writeText(msg); } catch (err) {}
+            mostrarAviso('Dados copiados! Cole a mensagem na conversa do WhatsApp.');
+            window.open(WHATSAPP_LINK, '_blank');
+        }
+        function mostrarAviso(t) {
+            const el = document.createElement('div');
+            el.textContent = t;
+            el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-zinc-900 border border-gold/50 text-white text-sm px-5 py-3 rounded-xl shadow-2xl';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4500);
+        }
+
+        function sendWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById('cName').value;
+            const city = document.getElementById('cCity').value;
+            const artist = document.getElementById('cArtist').value;
+            const date = document.getElementById('cDate').value;
+            const msg = document.getElementById('cMsg').value;
+
+            const text = `*Nova Cotação - ADW SHOW 2027*%0A%0A*Nome:* ${name}%0A*Cidade:* ${city}%0A*Atração/Serviço:* ${artist}%0A*Data:* ${date}%0A*Obs:* ${msg}`;
+            abrirWhatsApp(text);
+        }
+
+        function sendModalWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById('mName').value;
+            const city = document.getElementById('mCity').value;
+            const date = document.getElementById('mDate').value;
+
+            const text = `*Cotação Artista 2027 - ADW SHOW*%0A%0A*Artista:* ${selectedArtistForQuote}%0A*Nome:* ${name}%0A*Cidade:* ${city}%0A*Data:* ${date}`;
+            abrirWhatsApp(text);
+            closeModal();
+        }
+
+        /* =====================================================================
+           RÉVEILLON 26/27 — ATRAÇÕES DO CUBO GIRATÓRIO
+           Para mudar quem aparece, edite os nomes abaixo (iguais aos do casting).
+           ===================================================================== */
+        // Fotos das atrações do Réveillon que não estão no Casting 2027
+        const FOTOS_RV = {
+            "Djavú": "b5e085b687.jpg",
+            "Banda Pagô": "684944a490.jpg",
+            "Banda Impacto": "534dbca175.jpg",
+            "Day & Lara": "1625d87284.jpg",
+            "Foguetão Baiano": "72490aa582.jpg",
+            "Grupo Tradição": "0841bd8201.jpg",
+            "Rogério & Regiane": "cacb74c17b.jpg",
+            "CDB (Cê Tá Doido)": "8ea6af664a.jpg"
+        };
+
+        FOTOS_RV["Banda Dama de Ferro"] = "dama-de-ferro.jpg";
+
+        const reveillon2627 = [
+            "Bonde do Forró",
+            "Bruno & Denner",
+            "CDB (Cê Tá Doido)",
+            "Rogério & Regiane",
+            "Grupo Tradição",
+            "Edson & Hudson",
+            "Valéria Barros",
+            "Foguetão Baiano",
+            "Day & Lara",
+            "Banda Impacto",
+            "Banda Pagô",
+            "DJ Larissa Lahw",
+            "Djavú",
+            "Banda Dama de Ferro"
+        ];
+
+        (function setupReveillon() {
+            const spinner = document.getElementById('rvSpinner');
+            const stage = document.getElementById('rvStage');
+            const dots = document.getElementById('rvDots');
+            const artists = reveillon2627.map(n => casting2027.find(a => a.name === n) || { name: n, img: FOTOS_RV[n] || initialsCover(n) });
+
+            // Conteúdos (logo + artistas)
+            const items = [spinner.querySelector('.rv-logo')];
+            artists.forEach(a => {
+                const el = document.createElement('div');
+                el.className = 'rv-item';
+                el.innerHTML = `
+                    <img class="rv-photo" src="${a.img}" alt="${a.name}" draggable="false">
+                    <span class="absolute top-3 left-3 bg-black/70 border border-gold/50 text-gold text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">🎆 Réveillon 26/27</span>
+                    <div class="rv-info">
+                        <span class="text-[11px] text-gold uppercase tracking-widest font-semibold">Disponível para a virada</span>
+                        <h3 class="font-heading text-3xl font-bold uppercase text-white leading-tight mt-1 mb-4">${a.name}</h3>
+                        <button type="button" class="rv-quote w-full py-3 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black text-[11px] font-bold uppercase tracking-wider">Cotar Réveillon</button>
+                    </div>`;
+                const img = el.querySelector('img');
+                img.onerror = () => { img.onerror = null; img.src = initialsCover(a.name); };
+                el.querySelector('.rv-quote').addEventListener('click', e => { e.stopPropagation(); openModal(a.name + ' (Réveillon 26/27)'); });
+                items.push(el);
+            });
+            const N = items.length;
+            const mod = (x, m) => ((x % m) + m) % m;
+
+            // Cubo de 4 faces
+            spinner.innerHTML = '';
+            const faces = [0, 1, 2, 3].map(() => { const f = document.createElement('div'); f.className = 'rv-face'; spinner.appendChild(f); return f; });
+            items.forEach(() => { const d = document.createElement('span'); d.className = 'rv-dot'; dots.appendChild(d); });
+
+            let idx = 0, angle = 0, half = 0, timer = null;
+
+            function fill(i) { faces[mod(i, 4)].replaceChildren(items[mod(i, N)]); }
+            function place() { fill(idx - 1); fill(idx + 1); fill(idx); }
+            function shade() {
+                faces.forEach((f, k) => {
+                    const rel = mod(k * 90 + angle + 180, 360) - 180;          // ângulo da face em relação à frente
+                    f.style.setProperty('--shade', Math.min(Math.abs(rel) / 90, 1) * 0.65);
+                });
+            }
+            function apply() {
+                spinner.style.transform = `translateZ(${-half}px) rotateY(${angle}deg)`;
+                shade();
+                [...dots.children].forEach((d, i) => d.classList.toggle('on', i === mod(idx, N)));
+            }
+            function layout() {
+                half = stage.offsetWidth / 2;
+                stage.style.perspective = (stage.offsetWidth * 3.2) + 'px';
+                faces.forEach((f, k) => f.style.transform = `rotateY(${k * 90}deg) translateZ(${half}px)`);
+                apply();
+            }
+            function go(step) {
+                idx += step; angle = -idx * 90;
+                spinner.classList.add('anim'); apply();
+                setTimeout(place, 620);
+            }
+            window.rvGo = step => { go(step); restart(); };
+            function restart() { clearInterval(timer); timer = setInterval(() => go(1), 3800); }
+
+            // Arrastar com o dedo: o cubo acompanha o movimento, como nos Stories
+            let startX = null, dx = 0;
+            stage.addEventListener('pointerdown', e => {
+                if (e.target.closest('button')) return;
+                startX = e.clientX; dx = 0; clearInterval(timer);
+                spinner.classList.remove('anim');
+            });
+            window.addEventListener('pointermove', e => {
+                if (startX === null) return;
+                dx = e.clientX - startX;
+                const delta = Math.max(-90, Math.min(90, dx / (half * 2) * 90));
+                angle = -idx * 90 + delta; apply();
+            });
+            window.addEventListener('pointerup', () => {
+                if (startX === null) return;
+                startX = null;
+                const step = Math.abs(dx) > half * 0.35 ? (dx < 0 ? 1 : -1) : 0;
+                if (step) go(step); else { angle = -idx * 90; spinner.classList.add('anim'); apply(); }
+                restart();
+            });
+            stage.addEventListener('mouseenter', () => clearInterval(timer));
+            stage.addEventListener('mouseleave', () => { if (startX === null) restart(); });
+
+            place(); layout(); restart();
+            window.addEventListener('resize', layout);
+        })();
+
+        // Renderizar casting ao carregar
+        renderArtists();
+    </script>
+</body>
+</html>
